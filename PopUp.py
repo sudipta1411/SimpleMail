@@ -8,14 +8,19 @@ import auth
 
 class PopUp:
     def delete_event(self, widget, event, data=None):
-        gtk.main_quit()
+        #gtk.main_quit()
         return False
+
+    def destroy(self, widget, data=None):
+        gtk.main_quit()
 
     def __init__(self):
         """
-         A simple pop-up dialog box to promt user to input
+         A simple pop-up dialog box to prompt user to input
         name and password
         """
+        #self.smtp_server = smtp_server
+        #self.smtp_server = self.smtp_server_list[0]
         self.popUpWindow = gtk.Window(gtk.WINDOW_TOPLEVEL)
         self.popUpWindow.set_border_width(40)
         self.popUpWindow.set_resizable(False)
@@ -25,6 +30,7 @@ class PopUp:
         self.popUpWindow.modify_bg(gtk.STATE_NORMAL, color)
 
         self.popUpWindow.connect("delete_event", self.delete_event)
+        self.popUpWindow.connect("destroy", self.destroy)
 
         self.username_label = gtk.Label('User Name:  ')
         self.username_label.set_alignment(0,0)
@@ -88,17 +94,21 @@ class PopUp:
         #print self.password_remember_bool
 
     def continue_button_clicked(self,widget,data=None):
-        #print 'Clicked button'
         self.username = self.username_entry.get_text()
         #print 'User Name : %s' %self.username
         self.password = self.password_entry.get_text()
         #print 'Password : %s' %self.password
         auth.auth(self.username,self.password)
-        print 'Logged in successfully'
+        #if self.smtp_server is not None:
+        #    print 'Successfully logged in'
+        #else:
+        #    print 'unsuccessful attempt'
 
     def main(self):
         gtk.main()
 
 if __name__ == '__main__':
+    #smtp_server = None
     pop = PopUp()
+    #print smtp_server
     pop.main()
